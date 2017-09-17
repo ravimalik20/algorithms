@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#define ARR_LEN 10
+#define ARR_LEN 20
 
 void array_print(int *arr, int len);
 void merge_sort(int *arr, int len);
@@ -9,13 +9,19 @@ void __merge_sort(int *arr, int beg, int end);
 
 int main()
 {
-	int arr[ARR_LEN] = {49, 64, 61, 58, 2, 2, 38, 4, 51, 31};
-	merge_sort(arr, ARR_LEN);
+	int arr[ARR_LEN] = {
+		51, 9, 55, 76, 77,
+		54, 36, 71, 34, 34,
+		72, 62, 79, 15, 60,
+		98, 99, 75, 82, 41
+	};
+	printf("Array before sorting.\n");
 	array_print(arr, ARR_LEN);
+	
+	merge_sort(arr, ARR_LEN);
 
-	int arr2[ARR_LEN] = {98, 1, 26, 30, 2, 29, 60, 70, 37, 66};
-	merge_sort(arr2, ARR_LEN);
-	array_print(arr2, ARR_LEN);
+	printf("Array after sorting.\n");
+	array_print(arr, ARR_LEN);
 
 	return 0;
 }
@@ -46,30 +52,30 @@ void __merge_sort(int *arr, int beg, int end)
 	__merge_sort(arr, beg, mid);
 	__merge_sort(arr, mid+1, end);
 
-	int i = beg, j = mid+1, k=0, len=end-beg+1, temp[len];
-	int limit_arr1 = mid;
-	int limit_arr2 = end;
+	int i = beg, j = mid+1, k=0, len = (end-beg)+1, temp[len];
 
 	/* Merge start */
-	while (i <= limit_arr1 && j <= limit_arr2) {
-		if (arr[i] <= arr[j]) {
-			temp[k++] = arr[i++];
+	for (k = 0 ; k < len && i <= mid && j <= end ; k++) {
+		if (arr[i] < arr[j]) {
+			temp[k] = arr[i++];
 		}
 		else {
-			temp[k++] = arr[j++];
+			temp[k] = arr[j++];
 		}
 	}
 
 	/* Add leftover elements in the left and right sorted array */
-	while (i <= limit_arr1) {
+	while (i <= mid) {
 		temp[k++] = arr[i++];
 	}
 
-	while (j <= limit_arr2) {
+	while (j <= end) {
 		temp[k++] = arr[j++];
 	}
 
-	for (k = 0; k < len ; k++) {
-		arr[beg+k] = temp[k];
+	/* Copy temp array to original array. */
+	k = 0;
+	while (beg <= end) {
+		arr[beg++] = temp[k++];
 	}
 }
